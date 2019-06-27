@@ -2,11 +2,9 @@ package org.communis.javawebintro.entity;
 
 import lombok.Data;
 import org.communis.javawebintro.enums.UserRole;
-import org.communis.javawebintro.enums.UserStatus;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.Optional;
 
 @Data
 @Entity
@@ -26,9 +24,6 @@ public class User {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "second_name")
-    private String secondName;
-
     @Column(name = "password")
     private String password;
 
@@ -39,20 +34,7 @@ public class User {
     @Column(name = "date_create")
     private Date dateCreate;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "date_block")
-    private Date dateBlock;
-
-    @Column(name = "DATE_LAST_ONLINE")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date dateLastOnline;
-
     @Enumerated(EnumType.STRING)
     @Column
     private UserRole role;
-
-    @Enumerated(EnumType.STRING)
-    @Column
-    private UserStatus status;
-
 }

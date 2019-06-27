@@ -5,7 +5,6 @@ import org.communis.javawebintro.dto.UserWrapper;
 import org.communis.javawebintro.dto.filters.UserFilterWrapper;
 import org.communis.javawebintro.enums.UserAuth;
 import org.communis.javawebintro.enums.UserRole;
-import org.communis.javawebintro.enums.UserStatus;
 import org.communis.javawebintro.exception.ServerException;
 import org.communis.javawebintro.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,7 +56,6 @@ public class UserController {
     }
 
     private void prepareUserModelAndView(ModelAndView modelAndView) {
-        modelAndView.addObject("statuses", UserStatus.values());
         modelAndView.addObject("roles", UserRole.values());
     }
 }

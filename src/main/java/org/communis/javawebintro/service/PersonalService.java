@@ -34,7 +34,6 @@ public class PersonalService {
         try {
             User currentUser = userService.getCurrentUser();
             userWrapper.setRole(currentUser.getRole());
-            userWrapper.setStatus(currentUser.getStatus());
             userWrapper.fromWrapper(currentUser);
             userRepository.save(currentUser);
 

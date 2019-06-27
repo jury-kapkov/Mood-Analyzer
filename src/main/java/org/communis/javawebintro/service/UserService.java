@@ -4,9 +4,7 @@ import org.communis.javawebintro.config.UserDetailsImp;
 import org.communis.javawebintro.dto.UserPasswordWrapper;
 import org.communis.javawebintro.dto.UserWrapper;
 import org.communis.javawebintro.dto.filters.UserFilterWrapper;
-import org.communis.javawebintro.entity.LdapUserAttributes;
 import org.communis.javawebintro.entity.User;
-import org.communis.javawebintro.enums.UserStatus;
 import org.communis.javawebintro.exception.ServerException;
 import org.communis.javawebintro.exception.error.ErrorCodeConstants;
 import org.communis.javawebintro.exception.error.ErrorInformationBuilder;
@@ -29,8 +27,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.naming.directory.Attribute;
-import javax.naming.directory.BasicAttribute;
 import java.util.*;
 
 
@@ -74,7 +70,6 @@ public class UserService implements UserDetailsService {
      */
     public void updateLastTimeOnline(Long id) {
         User user = userRepository.findOne(id);
-        user.setDateLastOnline(new Date());
         userRepository.save(user);
     }
 
@@ -111,7 +106,6 @@ public class UserService implements UserDetailsService {
             }
 
             user.setDateCreate(new Date());
-            user.setStatus(UserStatus.ACTIVE);
 
             userRepository.save(user);
         } catch (ServerException ex) {
@@ -152,9 +146,6 @@ public class UserService implements UserDetailsService {
             if (user == getCurrentUser()) {
                 throw new ServerException(ErrorInformationBuilder.build(ErrorCodeConstants.USER_BLOCK_SELF_ERROR));
             }
-
-            user.setDateBlock(new Date());
-            user.setStatus(UserStatus.BLOCK);
             userRepository.save(user);
             Optional<Object> userPrincipal = sessionRegistry.getAllPrincipals().stream()
                     .filter(p -> Objects.equals(((UserDetailsImp) p).getUser().getId(), user.getId()))
@@ -177,8 +168,6 @@ public class UserService implements UserDetailsService {
     public void unblock(Long id) throws ServerException {
         try {
             User user = getUser(id);
-            user.setDateBlock(null);
-            user.setStatus(UserStatus.ACTIVE);
             userRepository.save(user);
         } catch (ServerException ex) {
             throw ex;
@@ -262,21 +251,4 @@ public class UserService implements UserDetailsService {
         return userRepository.findById(id)
                 .orElseThrow(() -> new ServerException(ErrorInformationBuilder.build(ErrorCodeConstants.DATA_NOT_FOUND)));
     }
-
-    private List<Attribute> createLdapUser(User user, LdapUserAttributes userAttributes) {
-        List<Attribute> attributes = new ArrayList<>();
-
-        attributes.add(new BasicAttribute(userAttributes.getLogin(), user.getLogin()));
-        attributes.add(new BasicAttribute(userAttributes.getName(), user.getName()));
-        attributes.add(new BasicAttribute(userAttributes.getSurname(), user.getSurname()));
-        userAttributes.getSecondName().ifPresent(sn -> {
-            if (!sn.isEmpty())
-                attributes.add(new BasicAttribute(sn, user.getSecondName()));
-        });
-        attributes.add(new BasicAttribute(userAttributes.getMail(), user.getMail()));
-
-        return attributes;
-    }
-
-
 }

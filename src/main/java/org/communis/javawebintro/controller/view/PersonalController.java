@@ -2,7 +2,6 @@ package org.communis.javawebintro.controller.view;
 
 import org.communis.javawebintro.dto.UserWrapper;
 import org.communis.javawebintro.enums.UserRole;
-import org.communis.javawebintro.enums.UserStatus;
 import org.communis.javawebintro.exception.ServerException;
 import org.communis.javawebintro.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +24,6 @@ public class PersonalController {
     public ModelAndView getPersonalPage() throws ServerException {
         ModelAndView modelAndView = new ModelAndView("user/my");
         modelAndView.addObject("user", new UserWrapper(userService.getCurrentUser()));
-        modelAndView.addObject("statuses", UserStatus.values());
         modelAndView.addObject("roles", UserRole.values());
         return modelAndView;
     }

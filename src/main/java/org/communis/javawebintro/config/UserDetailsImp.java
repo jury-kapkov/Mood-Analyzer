@@ -2,7 +2,6 @@ package org.communis.javawebintro.config;
 
 import org.communis.javawebintro.dto.UserWrapper;
 import org.communis.javawebintro.enums.UserAction;
-import org.communis.javawebintro.enums.UserStatus;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -34,43 +33,34 @@ public class UserDetailsImp implements UserDetails {
         actions.forEach(a -> authorities.add(new SimpleGrantedAuthority(a.name())));
     }
 
-    @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorities;
     }
 
-    @Override
     public String getPassword() {
         return user.getPassword();
     }
 
-    @Override
     public String getUsername () {
         return user.getLogin();
     }
 
-    @Override
     public boolean isAccountNonExpired() {
         return true;
     }
 
-    @Override
-    public boolean isAccountNonLocked() {
-        return user.getStatus() != UserStatus.BLOCK;
-    }
-
-    @Override
     public boolean isCredentialsNonExpired() {
         return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return user.getStatus() == UserStatus.ACTIVE;
     }
 
     public UserWrapper getUser() {
         return user;
     }
 
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+    public boolean isEnabled() {
+        return true;
+    }
 }

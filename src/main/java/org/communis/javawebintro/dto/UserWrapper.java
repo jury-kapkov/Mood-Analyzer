@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.communis.javawebintro.entity.User;
 import org.communis.javawebintro.enums.UserRole;
-import org.communis.javawebintro.enums.UserStatus;
 
 import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotNull;
@@ -49,7 +48,6 @@ public class UserWrapper implements ObjectWrapper<User>, Serializable
     private Date dateLastOnline;
     private Date dateOpen;
     private Date dateClose;
-    private UserStatus status;
     private UserRole role;
 
     private Long idLdap;
@@ -71,14 +69,10 @@ public class UserWrapper implements ObjectWrapper<User>, Serializable
             id = item.getId();
             name = item.getName();
             surname = item.getSurname();
-            secondName = item.getSecondName();
             login = item.getLogin();
             mail=item.getMail();
             password = item.getPassword();
-            dateLastOnline = item.getDateLastOnline();
             dateOpen = item.getDateCreate();
-            dateClose = item.getDateBlock();
-            status=item.getStatus();
             role=item.getRole();
         }
     }
@@ -88,11 +82,9 @@ public class UserWrapper implements ObjectWrapper<User>, Serializable
         if(item!=null) {
             item.setLogin(login);
             item.setRole(role);
-            item.setStatus(status);
             item.setMail(mail);
             item.setName(name);
             item.setSurname(surname);
-            item.setSecondName(secondName);
         }
     }
 
@@ -104,10 +96,5 @@ public class UserWrapper implements ObjectWrapper<User>, Serializable
     public boolean isPasswordValid() {
         return (password == null && confirmPassword == null) ||
                 (password != null && confirmPassword != null && password.equals(confirmPassword));
-    }
-
-
-    public boolean isActive(){
-        return status == UserStatus.ACTIVE;
     }
 }

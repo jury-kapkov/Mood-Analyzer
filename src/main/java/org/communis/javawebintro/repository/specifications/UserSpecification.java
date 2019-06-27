@@ -38,9 +38,6 @@ public abstract class UserSpecification implements Specification<User>
                     if (filter.getRole() != null) {
                         predicates.add(cb.equal(root.get("role"), filter.getRole()));
                     }
-                    if (filter.getStatus() != null) {
-                        predicates.add(cb.equal(root.get("status"), filter.getStatus()));
-                    }
 
                 }
                 return cb.and((Predicate[]) predicates.toArray(new Predicate[predicates.size()]));
