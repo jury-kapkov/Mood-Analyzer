@@ -1,0 +1,37 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+<head th:replace="fragments/head :: head(~{::title}, ~{::link}, ~{::script})">
+    <title>Вход</title>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/static/css/form.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/static/css/login-toast.css}"/>
+
+    <script type="text/javascript" th:src="@{/static/js/validate_fields.js}"></script>
+    <script type="text/javascript" th:src="@{/static/js/login.js}"></script>
+</head>
+<body>
+<div th:replace="fragments/error :: errorModalFragment"></div>
+<div class="place-for-form row">
+    <div class="body-form">
+        <form id="login-form" class="form-horizontal" th:action="@{/login}" method="post">
+            <div hidden id="error" class="input-field login-error">
+                <i class="material-icons">error</i>
+                <span></span>
+            </div>
+            <div class="input-group">
+                <input type="text" class="form-control validate required " id="username"  placeholder="Username" aria-describedby="sizing-addon2" name="username" autofocus="autofocus"/>
+                <label id="username-label" for="username"></label>
+            </div>
+            <div class="input-group">
+                <input type="password" class="form-control validate required " id="password"  placeholder="Пароль *" aria-describedby="sizing-addon2" name="password"/>
+                <label id="password-label" for="password"></label>
+            </div>
+
+            <div class="buttons-area">
+                <button id="submit" type="submit" class="btn btn-primary btn-md stretch">Вход</button>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>
