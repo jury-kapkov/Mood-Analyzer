@@ -343,3 +343,14 @@ input.invalid:focus {
 .modal {
     overflow: visible;
 }
+.menu-item {
+    color: #fff;
+    margin: 0 15px;
+    font-sze: 16px;
+    transition: transform .3s;
+}
+.menu-item:hover {
+    transform: scale(1.1);
+    color: #fff;
+    text-decoration: none;
+}
