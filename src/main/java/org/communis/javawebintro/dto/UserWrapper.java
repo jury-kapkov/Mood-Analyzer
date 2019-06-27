@@ -80,8 +80,6 @@ public class UserWrapper implements ObjectWrapper<User>, Serializable
             dateClose = item.getDateBlock();
             status=item.getStatus();
             role=item.getRole();
-            if(item.getLdapAuth().isPresent())
-                idLdap=item.getLdapAuth().get().getId();
         }
     }
 

@@ -1,6 +1,5 @@
 package org.communis.javawebintro.config;
 
-import org.communis.javawebintro.config.ldap.CustomPerson;
 import org.communis.javawebintro.exception.ServerException;
 import org.communis.javawebintro.exception.error.ErrorCodeConstants;
 import org.communis.javawebintro.exception.error.ErrorInformationBuilder;
@@ -53,8 +52,7 @@ public class SuccessLoginHandler extends SimpleUrlAuthenticationSuccessHandler {
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws IOException, ServletException {
         if (!(authentication.getPrincipal() instanceof UserDetailsImp)) {
-            UserDetails principal = (CustomPerson) authentication.getPrincipal();
-            UserDetailsImp userDetailsImp;
+            UserDetails principal = (UserDetails) authentication.getPrincipal();
             try {
                 try {
                     UserDetailsImp userDetails = (UserDetailsImp) userService.loadUserByUsername(principal.getUsername());
@@ -63,12 +61,10 @@ public class SuccessLoginHandler extends SimpleUrlAuthenticationSuccessHandler {
                         throw new ServerException(ErrorInformationBuilder.build(ErrorCodeConstants.USER_LDAP_EXIST_BD));
                     }
 
-                    userDetailsImp = userService.updateUserFromLdap(userDetails.getUser().getId(), (CustomPerson) principal);
                 } catch (UsernameNotFoundException ex) {
-                    userDetailsImp = userService.addUserFromLdap((CustomPerson) principal);
                 }
-                authentication = new UsernamePasswordAuthenticationToken(userDetailsImp,
-                        authentication.getCredentials(), userDetailsImp.getAuthorities());
+                authentication = new UsernamePasswordAuthenticationToken(principal,
+                        authentication.getCredentials(), principal.getAuthorities());
 
                 SecurityContextHolder.getContext().setAuthentication(authentication);
 
@@ -76,7 +72,7 @@ public class SuccessLoginHandler extends SimpleUrlAuthenticationSuccessHandler {
 
                 sessionRegistry.getAllSessions(principal, false).forEach(SessionInformation::expireNow);
 
-                sessionRegistry.registerNewSession(sessionId, userDetailsImp);
+                sessionRegistry.registerNewSession(sessionId, principal);
             } catch (Exception ex) {
                 throw new ServletException(ex);
             }

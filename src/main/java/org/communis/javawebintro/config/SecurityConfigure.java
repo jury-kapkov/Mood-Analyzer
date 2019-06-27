@@ -1,7 +1,5 @@
 package org.communis.javawebintro.config;
 
-import org.communis.javawebintro.config.ldap.CustomLdapAuthenticationProvider;
-import org.communis.javawebintro.service.LdapService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,12 +17,6 @@ import java.util.Arrays;
 
 @Configuration
 public class SecurityConfigure extends WebSecurityConfigurerAdapter {
-
-    private final LdapService ldapService;
-
-    public SecurityConfigure(LdapService ldapService) {
-        this.ldapService = ldapService;
-    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -69,12 +61,6 @@ public class SecurityConfigure extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    @Override
-    public AuthenticationManager authenticationManager() throws Exception {
-        return new ProviderManager(Arrays.asList(ldapAuthenticationProvider(), classicAuthenticationProvider()));
-    }
-
-    @Bean
     public AuthenticationProvider classicAuthenticationProvider() {
         return new ClassicAuthenticationProvider();
     }
@@ -89,11 +75,6 @@ public class SecurityConfigure extends WebSecurityConfigurerAdapter {
         return new FailureLoginHandler();
     }
 
-
-    @Bean
-    public CustomLdapAuthenticationProvider ldapAuthenticationProvider() {
-        return new CustomLdapAuthenticationProvider(ldapService);
-    }
 
     @Bean
     public BCryptPasswordEncoder encoder() {

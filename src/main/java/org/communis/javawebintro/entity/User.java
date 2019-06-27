@@ -55,12 +55,4 @@ public class User {
     @Column
     private UserStatus status;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_ldap")
-    private LdapAuth ldapAuth;
-
-    public Optional<LdapAuth> getLdapAuth() {
-        return Optional.ofNullable(ldapAuth);
-    }
-
 }

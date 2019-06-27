@@ -1,37 +1,24 @@
 package org.communis.javawebintro.service;
 
 import org.communis.javawebintro.config.UserDetailsImp;
-import org.communis.javawebintro.config.ldap.CustomPerson;
-import org.communis.javawebintro.dto.LdapAuthWrapper;
 import org.communis.javawebintro.dto.UserPasswordWrapper;
 import org.communis.javawebintro.dto.UserWrapper;
 import org.communis.javawebintro.dto.filters.UserFilterWrapper;
-import org.communis.javawebintro.entity.LdapAuth;
 import org.communis.javawebintro.entity.LdapUserAttributes;
 import org.communis.javawebintro.entity.User;
-import org.communis.javawebintro.enums.UserRole;
 import org.communis.javawebintro.enums.UserStatus;
 import org.communis.javawebintro.exception.ServerException;
 import org.communis.javawebintro.exception.error.ErrorCodeConstants;
 import org.communis.javawebintro.exception.error.ErrorInformationBuilder;
-import org.communis.javawebintro.repository.LdapAuthRepository;
 import org.communis.javawebintro.repository.PermissionRepository;
 import org.communis.javawebintro.repository.UserRepository;
 import org.communis.javawebintro.repository.specifications.UserSpecification;
 import org.communis.javawebintro.utils.CredentialsUtil;
-import org.communis.javawebintro.utils.LdapUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.ldap.AttributeInUseException;
-import org.springframework.ldap.core.DirContextAdapter;
-import org.springframework.ldap.core.DirContextOperations;
-import org.springframework.ldap.core.LdapTemplate;
-import org.springframework.ldap.query.LdapQuery;
-import org.springframework.ldap.query.LdapQueryBuilder;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.session.SessionInformation;
 import org.springframework.security.core.session.SessionRegistry;
@@ -42,11 +29,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.naming.InvalidNameException;
-import javax.naming.NamingException;
 import javax.naming.directory.Attribute;
 import javax.naming.directory.BasicAttribute;
-import javax.naming.directory.DirContext;
 import java.util.*;
 
 
@@ -58,18 +42,15 @@ public class UserService implements UserDetailsService {
     private final PermissionRepository permissionRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final SessionRegistry sessionRegistry;
-    private final LdapAuthRepository ldapAuthRepository;
 
     @Autowired
     public UserService(UserRepository userRepository, PermissionRepository permissionRepository,
                        BCryptPasswordEncoder bCryptPasswordEncoder,
-                       @Qualifier("sessionRegistry") SessionRegistry sessionRegistry,
-                       LdapAuthRepository ldapAuthRepository) {
+                       @Qualifier("sessionRegistry") SessionRegistry sessionRegistry) {
         this.userRepository = userRepository;
         this.permissionRepository = permissionRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.sessionRegistry = sessionRegistry;
-        this.ldapAuthRepository = ldapAuthRepository;
     }
 
     /**
@@ -116,69 +97,6 @@ public class UserService implements UserDetailsService {
     }
 
     /**
-     * Добавляет пользователя из ldap-сервера в базу
-     *
-     * @param person информация об атрибутах пользователя на ldap-сервере
-     * @return информация о добавленном пользователе
-     */
-    public UserDetailsImp addUserFromLdap(CustomPerson person) throws ServerException {
-        try {
-            User user = new User();
-
-            user = userFromLdap(user, person);
-
-            user.setDateCreate(new Date());
-            user.setStatus(UserStatus.ACTIVE);
-
-            LdapAuth ldapAuth = ldapAuthRepository.findById(person.getIdLdap())
-                    .orElseThrow(() -> new ServerException(ErrorInformationBuilder.build(ErrorCodeConstants.USER_ADD_ERROR)));
-            user.setLdapAuth(ldapAuth);
-
-            if(ldapAuth.getRoleFromGroup()){
-                if(!person.getAuthorities().isEmpty())
-                    user.setRole(UserRole.valueOf(((List<GrantedAuthority>) person.getAuthorities()).get(0).getAuthority()));
-            }
-
-            userRepository.save(user);
-
-            return new UserDetailsImp(new UserWrapper(user),
-                    permissionRepository.findActionsByRole(user.getRole()));
-        } catch (ServerException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServerException(ErrorInformationBuilder.build(ErrorCodeConstants.USER_ADD_ERROR), ex);
-        }
-    }
-
-    /**
-     * Обновляет инфомарцию о пользователе из ldap-сервера в базе
-     *
-     * @param person информация об атрибутах пользователя на ldap-сервере
-     * @return информация о обновленном пользователе
-     */
-    public UserDetailsImp updateUserFromLdap(Long id, CustomPerson person) throws ServerException {
-        try {
-            User user = userRepository.findOne(id);
-
-            user = userFromLdap(user, person);
-
-            LdapAuth ldapAuth = ldapAuthRepository.findById(person.getIdLdap())
-                    .orElseThrow(() -> new ServerException(ErrorInformationBuilder.build(ErrorCodeConstants.USER_ADD_ERROR)));
-            if(ldapAuth.getRoleFromGroup()){
-                if(!person.getAuthorities().isEmpty())
-                    user.setRole(UserRole.valueOf(((List<GrantedAuthority>) person.getAuthorities()).get(0).getAuthority()));
-            }
-
-            userRepository.save(user);
-
-            return new UserDetailsImp(new UserWrapper(user),
-                    permissionRepository.findActionsByRole(user.getRole()));
-        } catch (Exception ex) {
-            throw new ServerException(ErrorInformationBuilder.build(ErrorCodeConstants.USER_UPDATE_ERROR), ex);
-        }
-    }
-
-    /**
      * Добавляет информацию о новом пользователе в базу из {@link UserWrapper}
      *
      * @param userWrapper инфомарция о новом пользователе
@@ -190,20 +108,6 @@ public class UserService implements UserDetailsService {
             userWrapper.fromWrapper(user);
             if (userRepository.findFirstByLogin(user.getLogin()).isPresent()) {
                 throw new ServerException(ErrorInformationBuilder.build(ErrorCodeConstants.USER_LOGIN_ALREADY_EXIST));
-            }
-
-            if (userWrapper.getIdLdap() != null) {
-                LdapAuth ldapAuth = ldapAuthRepository.findById(userWrapper.getIdLdap())
-                        .orElseThrow(() -> new ServerException(ErrorInformationBuilder.build(ErrorCodeConstants.DATA_NOT_FOUND)));
-                user.setLdapAuth(ldapAuth);
-                if(!ldapAuth.isReadonly())
-                    if (validatePassword(new UserPasswordWrapper(userWrapper))) {
-                        user.setLdapAuth(ldapAuth);
-                        String password = addUserInLdap(user, ldapAuth, userWrapper.getPassword());
-                        user.setPassword(password);
-                    }
-            } else {
-                changePassword(user, new UserPasswordWrapper(userWrapper));
             }
 
             user.setDateCreate(new Date());
@@ -228,15 +132,6 @@ public class UserService implements UserDetailsService {
             User user = getUser(userWrapper.getId());
             userWrapper.fromWrapper(user);
             userRepository.save(user);
-
-            if (userWrapper.getIdLdap() != null) {
-                LdapAuth ldapAuth = user.getLdapAuth()
-                        .orElseThrow(() -> new ServerException(ErrorInformationBuilder.build(ErrorCodeConstants.USER_UPDATE_ERROR)));
-
-                user.setLdapAuth(ldapAuth);
-                if(!ldapAuth.isReadonly())
-                    editLdapUser(user, ldapAuth);
-            }
         } catch (ServerException ex) {
             throw ex;
         } catch (Exception ex) {
@@ -266,12 +161,6 @@ public class UserService implements UserDetailsService {
                     .findFirst();
             userPrincipal.ifPresent(o -> sessionRegistry.getAllSessions(o, false)
                     .forEach(SessionInformation::expireNow));
-
-            if (user.getLdapAuth().isPresent()) {
-                LdapAuth ldapAuth = user.getLdapAuth()
-                        .orElseThrow(() -> new ServerException(ErrorInformationBuilder.build(ErrorCodeConstants.USER_LDAP_NOT_EXIST)));
-                blockUserInLdap(user.getLogin(), new LdapAuthWrapper(ldapAuth));
-            }
         } catch (ServerException ex) {
             throw ex;
         } catch (Exception ex) {
@@ -291,12 +180,6 @@ public class UserService implements UserDetailsService {
             user.setDateBlock(null);
             user.setStatus(UserStatus.ACTIVE);
             userRepository.save(user);
-
-            if (user.getLdapAuth().isPresent()) {
-                LdapAuth ldapAuth = user.getLdapAuth()
-                        .orElseThrow(() -> new ServerException(ErrorInformationBuilder.build(ErrorCodeConstants.USER_LDAP_NOT_EXIST)));
-                unblockUserInLdap(user.getLogin(), new LdapAuthWrapper(ldapAuth));
-            }
         } catch (ServerException ex) {
             throw ex;
         } catch (Exception ex) {
@@ -313,16 +196,6 @@ public class UserService implements UserDetailsService {
             throws ServerException {
         try {
             User user = getUser(passwordWrapper.getId());
-
-            if (user.getLdapAuth().isPresent()) {
-                if (validatePassword(passwordWrapper)) {
-                    LdapAuth ldapAuth = user.getLdapAuth()
-                            .orElseThrow(() -> new ServerException(ErrorInformationBuilder.build(ErrorCodeConstants.USER_LDAP_NOT_EXIST)));
-                    editLdapUserPassword(user, passwordWrapper.getPassword(), ldapAuth);
-                }
-            } else {
-                changePassword(user, passwordWrapper);
-            }
         } catch (ServerException ex) {
             throw ex;
         } catch (Exception ex) {
@@ -390,78 +263,9 @@ public class UserService implements UserDetailsService {
                 .orElseThrow(() -> new ServerException(ErrorInformationBuilder.build(ErrorCodeConstants.DATA_NOT_FOUND)));
     }
 
-    private User userFromLdap(User user, CustomPerson person) {
-        user.setLogin(person.getUsername());
-        user.setName(person.getGivenName());
-        user.setPassword(person.getPassword() != null ? person.getPassword() : "");
-        user.setSurname(person.getSn());
-        user.setMail(person.getMail());
-
-        return user;
-    }
-
-    private String addUserInLdap(User user, LdapAuth ldapAuth, String password) throws InvalidNameException, ServerException {
-        throw new UnsupportedOperationException();
-    }
-
-    private void blockUserInLdap(String login, LdapAuthWrapper wrapper) throws NamingException {
-        throw new UnsupportedOperationException();
-    }
-
-    private void unblockUserInLdap(String login, LdapAuthWrapper wrapper) throws NamingException {
-        throw new UnsupportedOperationException();
-    }
-
-    private DirContextOperations getLdapUserData(String login, LdapAuthWrapper wrapper) {
-        LdapQuery query = LdapQueryBuilder.query()
-                .base(wrapper.getUsersDirectory())
-                .attributes(LdapUtil.USER_PASSWORD_ATTR)
-                .where(wrapper.getUserAttributes().getLogin()).is(login);
-
-        LdapTemplate ldapTemplate = new LdapTemplate(LdapUtil.getLdapContextSource(wrapper));
-
-        return ldapTemplate.searchForContext(query);
-    }
-
-    private DirContextAdapter createLdapUser(User user, String password, LdapAuth ldapAuth)
-            throws InvalidNameException {
-        throw new UnsupportedOperationException();
-    }
-
-    private void addUserToGroup(LdapTemplate template, String login, String group, LdapAuth ldapAuth) throws InvalidNameException {
-        BasicAttribute userLink = new BasicAttribute(LdapUtil.USER_ATTR_IN_GROUP, login);
-        String objectDn = LdapUtil.getObjectDn(group, ldapAuth.getGroupsDirectory());
-
-        try {
-            LdapUtil.modifyObject(template, objectDn, Collections.singletonList(userLink), DirContext.ADD_ATTRIBUTE);
-        } catch (AttributeInUseException ignored) {
-
-        }
-    }
-
-    private void removeUserFromGroup(LdapTemplate template, String login, String group, LdapAuth ldapAuth) throws InvalidNameException {
-        try {
-            BasicAttribute userLink = new BasicAttribute(LdapUtil.USER_ATTR_IN_GROUP, login);
-            String objectDn = LdapUtil.getObjectDn(group, ldapAuth.getGroupsDirectory());
-
-            LdapUtil.modifyObject(template, objectDn, Collections.singletonList(userLink), DirContext.REMOVE_ATTRIBUTE);
-        } catch (org.springframework.ldap.NoSuchAttributeException ignored) {
-
-        }
-    }
-
-    public void editLdapUser(User user, LdapAuth ldapAuth) throws InvalidNameException, ServerException {
-        throw new UnsupportedOperationException();
-    }
-
-    public void editLdapUserPassword(User user, String password, LdapAuth ldapAuth) throws InvalidNameException {
-        throw new UnsupportedOperationException();
-    }
-
     private List<Attribute> createLdapUser(User user, LdapUserAttributes userAttributes) {
         List<Attribute> attributes = new ArrayList<>();
 
-        attributes.add(new BasicAttribute(LdapUtil.COMMON_NAME_ATTR, user.getLogin()));
         attributes.add(new BasicAttribute(userAttributes.getLogin(), user.getLogin()));
         attributes.add(new BasicAttribute(userAttributes.getName(), user.getName()));
         attributes.add(new BasicAttribute(userAttributes.getSurname(), user.getSurname()));

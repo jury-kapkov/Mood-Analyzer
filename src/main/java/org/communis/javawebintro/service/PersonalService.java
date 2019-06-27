@@ -2,7 +2,6 @@ package org.communis.javawebintro.service;
 
 import org.communis.javawebintro.dto.UserPasswordWrapper;
 import org.communis.javawebintro.dto.UserWrapper;
-import org.communis.javawebintro.entity.LdapAuth;
 import org.communis.javawebintro.entity.User;
 import org.communis.javawebintro.exception.ServerException;
 import org.communis.javawebintro.exception.error.ErrorCodeConstants;
@@ -39,13 +38,6 @@ public class PersonalService {
             userWrapper.fromWrapper(currentUser);
             userRepository.save(currentUser);
 
-            if (currentUser.getLdapAuth().isPresent()) {
-                LdapAuth ldapAuth = currentUser.getLdapAuth()
-                        .orElseThrow(() -> new ServerException(ErrorInformationBuilder.build(ErrorCodeConstants.USER_UPDATE_ERROR)));
-
-                userService.editLdapUser(currentUser, ldapAuth);
-            }
-
         } catch (Exception ex) {
             throw new ServerException(ErrorInformationBuilder.build(ErrorCodeConstants.USER_UPDATE_ERROR), ex);
         }
@@ -59,16 +51,6 @@ public class PersonalService {
     public void changePassword(UserPasswordWrapper passwordWrapper) throws ServerException {
         try {
             User user = userRepository.findOne(userService.getCurrentUser().getId());
-
-            if (user.getLdapAuth().isPresent()) {
-                if (userService.validatePassword(passwordWrapper)) {
-                    LdapAuth ldapAuth = user.getLdapAuth()
-                            .orElseThrow(() -> new ServerException(ErrorInformationBuilder.build(ErrorCodeConstants.USER_LDAP_NOT_EXIST)));
-                    userService.editLdapUserPassword(user, passwordWrapper.getPassword(), ldapAuth);
-                }
-            } else {
-                userService.changePassword(user, passwordWrapper);
-            }
         } catch (Exception ex) {
             throw new ServerException(ErrorInformationBuilder.build(ErrorCodeConstants.USER_UPDATE_ERROR), ex);
         }
