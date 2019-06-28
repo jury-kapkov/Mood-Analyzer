@@ -26,9 +26,6 @@ public class UserWrapper implements ObjectWrapper<User>, Serializable
     @Size(max = 100)
     private String surname;
 
-    @Size(max = 100)
-    private String secondName;
-
     @NotNull
     @Size(max = 20)
     private String login;
@@ -45,12 +42,9 @@ public class UserWrapper implements ObjectWrapper<User>, Serializable
     @Size(min = 8, max = 20)
     private String confirmPassword;
 
-    private Date dateLastOnline;
-    private Date dateOpen;
-    private Date dateClose;
-    private UserRole role;
+    private Date date_create;
 
-    private Long idLdap;
+    private UserRole role;
 
     public UserWrapper() {
 
@@ -72,7 +66,7 @@ public class UserWrapper implements ObjectWrapper<User>, Serializable
             login = item.getLogin();
             mail=item.getMail();
             password = item.getPassword();
-            dateOpen = item.getDateCreate();
+            date_create = item.getDateCreate();
             role=item.getRole();
         }
     }
@@ -89,7 +83,7 @@ public class UserWrapper implements ObjectWrapper<User>, Serializable
     }
 
     public String getFio() {
-        return surname + " " + name + (secondName != null ? " " + secondName : "");
+        return surname + " " + name;
     }
 
     @AssertTrue

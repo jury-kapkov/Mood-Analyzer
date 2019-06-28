@@ -38,11 +38,6 @@
                            th:field="${user.name}" class="required validate" maxlength="100"/>
                     <label for="name">Имя</label>
                 </div>
-                <div class="input-field">
-                    <input id="second-name" name="secondName" type="text"
-                           maxlength="100" th:field="${user.secondName}"/>
-                    <label for="second-name">Отчество</label>
-                </div>
             </div>
             <div class="col s4">
                 <div class="input-field">
@@ -76,15 +71,15 @@
                            name="confirmPassword"  class="required validate" maxlength="20"/>
                     <label for="confirmPassword">Повторите пароль</label>
                 </div>
-                <div class="input-field">
-                    <select id="ldaps" th:field="${user.idLdap}" name="idLdap">
-                        <option th:value="${null}">Внутренний</option>
-                        <option th:each="r : ${ldaps}"
-                                th:value="${r.id}"
-                                th:text="${r.name}"></option>
-                    </select>
-                    <label for="ldaps">Метод авторизации</label>
-                </div>
+<!--                <div class="input-field">-->
+<!--                    <select id="ldaps" th:field="${user.idLdap}" name="idLdap">-->
+<!--                        <option th:value="${null}">Внутренний</option>-->
+<!--                        <option th:each="r : ${ldaps}"-->
+<!--                                th:value="${r.id}"-->
+<!--                                th:text="${r.name}"></option>-->
+<!--                    </select>-->
+<!--                    <label for="ldaps">Метод авторизации</label>-->
+<!--                </div>-->
             </div>
             <div class="buttons-area col s12">
                 <button type="button" class="waves-effect waves-light btn" onclick="UserController.addUserEvent()">Добавить</button>
@@ -94,21 +89,6 @@
             </div>
         </fieldset>
     </form>
-</div>
-
-<div id="ldap-modal" class="modal">
-    <div class="modal-content">
-        <h4>Выберите ldap-сервер, для добавления пользователя</h4>
-        <div class="input-field">
-            <select id="ldap-list"></select>
-            <label for="ldap-list">LDAP-сервер</label>
-        </div>
-    </div>
-    <div class="modal-footer">
-        <a class="modal-action modal-close waves-effect waves-light btn-flat btn-cancel">Отмена</a>
-        <a id="confirm-btn" class="modal-action modal-close waves-effect waves-light btn-flat"
-           onclick="UserController.addUser()">Принять</a>
-    </div>
 </div>
 
 <div th:replace="fragments/error :: errorModalFragment"></div>

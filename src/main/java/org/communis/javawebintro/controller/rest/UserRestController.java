@@ -53,15 +53,4 @@ public class UserRestController {
         }
         userService.changePassword(passwordWrapper);
     }
-
-    @RequestMapping(value = "/{id}/block", method = RequestMethod.POST)
-    public void block(@PathVariable("id") Long id)
-            throws InvalidDataException, ServerException, NotFoundException {
-        userService.block(id);
-    }
-
-    @RequestMapping(value = "/{id}/unblock", method = RequestMethod.POST)
-    public void unblock(@PathVariable("id") Long id) throws NotFoundException, ServerException {
-        userService.unblock(id);
-    }
 }

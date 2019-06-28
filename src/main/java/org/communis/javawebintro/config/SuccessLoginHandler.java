@@ -57,10 +57,6 @@ public class SuccessLoginHandler extends SimpleUrlAuthenticationSuccessHandler {
                 try {
                     UserDetailsImp userDetails = (UserDetailsImp) userService.loadUserByUsername(principal.getUsername());
 
-                    if(userDetails.getUser().getIdLdap() == null) {
-                        throw new ServerException(ErrorInformationBuilder.build(ErrorCodeConstants.USER_LDAP_EXIST_BD));
-                    }
-
                 } catch (UsernameNotFoundException ex) {
                 }
                 authentication = new UsernamePasswordAuthenticationToken(principal,
