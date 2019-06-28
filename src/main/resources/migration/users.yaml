@@ -31,7 +31,7 @@ databaseChangeLog:
                   type: varchar(30)
               - column:
                   name: password
-                  type: varchar(20)
+                  type: varchar(100)
               - column:
                   name: role
                   type: varchar(20)

@@ -1,6 +1,6 @@
 /*body {
     padding-top: 70px;
-}*/
+}
 
 nav, .side-nav .collapsible-body > ul:not(.collapsible) > li.active,
 .side-nav.fixed .collapsible-body > ul:not(.collapsible) > li.active,
@@ -333,8 +333,8 @@ input.invalid:focus {
 .modal-footer {
     text-align: right;
 }
-
-/*top menu*/
+*/
+top menu
 .nav-content {
     width: 1000px;
     margin: auto;
@@ -353,4 +353,8 @@ input.invalid:focus {
     transform: scale(1.1);
     color: #fff;
     text-decoration: none;
+}
+
+.stretch {
+    width: 100%;
 }

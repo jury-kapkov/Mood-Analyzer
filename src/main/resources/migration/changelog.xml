@@ -12,5 +12,7 @@
     <include file="tags.yaml" relativeToChangelogFile="true"/>
     <include file="marks.yaml" relativeToChangelogFile="true"/>
     <include file="peremissons.yaml" relativeToChangelogFile="true"/>
+<!--    inits-->
+    <include file="insert_users.sql" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>
