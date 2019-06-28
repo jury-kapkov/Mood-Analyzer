@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Data
 @Entity
 @NoArgsConstructor
-@Table(name = "permissions")
+@Table(name = "permissons")
 public class Permission {
 
     @Id

@@ -1,0 +1,22 @@
+databaseChangeLog:
+  - changeSet:
+      id: create_table_marks
+      author: yourchick
+      tagDatabase: Version 0.1
+      changes:
+      - createTable:
+          tableName: marks
+          columns:
+          - column:
+              name: id
+              type: BIGINT
+              autoIncrement: true
+              constraints:
+                primaryKey: true
+                nullable: false
+          - column:
+              name: mark
+              type: varchar(20)
+          - column:
+              name: date_time_create
+              type: TIMESTAMP

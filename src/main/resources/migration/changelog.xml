@@ -4,10 +4,13 @@
         xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-    <changeSet id="Version 1 tag" author="Yourchick">
+    <changeSet id="Version 1 tag" author="yourchick">
         <tagDatabase tag="Version 1"/>
     </changeSet>
 
-    <include file="01_init_db.sql" relativeToChangelogFile="true"/>
+    <include file="users.yaml" relativeToChangelogFile="true"/>
+    <include file="tags.yaml" relativeToChangelogFile="true"/>
+    <include file="marks.yaml" relativeToChangelogFile="true"/>
+    <include file="peremissons.yaml" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>

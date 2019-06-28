@@ -1,0 +1,37 @@
+databaseChangeLog:
+  - changeSet:
+      id: create_table_users
+      author: yourchick
+      tagDatabase: Version 0.1
+      changes:
+        - createTable:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: login
+                  type: varchar(20)
+              - column:
+                  name: name
+                  type: varchar(20)
+              - column:
+                  name: surname
+                  type: varchar(20)
+              - column:
+                  name: date_create
+                  type: TIMESTAMP
+              - column:
+                  name: mail
+                  type: varchar(30)
+              - column:
+                  name: password
+                  type: varchar(20)
+              - column:
+                  name: role
+                  type: varchar(20)
