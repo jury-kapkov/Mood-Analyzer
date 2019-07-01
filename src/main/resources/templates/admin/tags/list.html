@@ -21,13 +21,9 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:class="'clickable'" th:each="user : ${page}"
-                th:onclick="'request(\'' + @{|/admin/users/${user.id}|}+ '\');'">
-                <td th:text="|${user.getFio()}|"></td>
-                <td th:text="${user.login}"></td>
-                <td th:text="${user.mail}"></td>
-                <td th:text="${user.role!=null ? user.role.getStringName() : ''}"></td>
-                <td th:text="${user.date_create}"></td>
+            <tr th:class="'clickable'" th:each="tag : ${page}">
+                <td th:text="${tag.name}"></td>
+                <td th:text="${tag.dateTimeCreate}"></td>
             </tr>
             </tbody>
         </table>

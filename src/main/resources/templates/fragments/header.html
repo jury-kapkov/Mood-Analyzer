@@ -11,12 +11,11 @@
         </button>
         <div class="collapse navbar-collapse" id="main-navbar">
             <div class="navbar-nav mr-auto">
-                <a th:class="'menu-item' + (${item == 'tags'} ? 'active' : '')"
-                   th:href="@{/admin/tags}">Метки</a>
                 <a th:class="'menu-item' + (${item == 'mood'} ? 'active' : '')"
                    th:href="@{/admin/mood}">Настроение</a>
                 <a th:class="'menu-item' + (${item == 'statistics'} ? 'active' : '')"
                    th:href="@{/admin/statistic}">Статистика</a>
+                <a class="menu-item" th:href="@{/admin/tags}">Метки</a>
                 <a class="menu-item" th:href="@{/admin/users}">Пользователи</a>
                 <a class="menu-item" href="/swagger-ui.html">Swagger</a>
             </div>
