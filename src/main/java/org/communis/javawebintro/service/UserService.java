@@ -104,9 +104,9 @@ public class UserService implements UserDetailsService {
             if (userRepository.findFirstByLogin(user.getLogin()).isPresent()) {
                 throw new ServerException(ErrorInformationBuilder.build(ErrorCodeConstants.USER_LOGIN_ALREADY_EXIST));
             }
-
             user.setDateCreate(new Date());
-
+            UserPasswordWrapper passswordWrapper = new UserPasswordWrapper(userWrapper);
+            changePassword(user, passswordWrapper);
             userRepository.save(user);
         } catch (ServerException ex) {
             throw ex;
@@ -123,7 +123,8 @@ public class UserService implements UserDetailsService {
      */
     public void edit(UserWrapper userWrapper) throws ServerException {
         try {
-            User user = getUser(userWrapper.getId());
+            String login = userWrapper.getLogin();
+            User user = getUserByLogin(login);
             userWrapper.fromWrapper(user);
             userRepository.save(user);
         } catch (ServerException ex) {
@@ -249,6 +250,10 @@ public class UserService implements UserDetailsService {
 
     private User getUser(Long id) throws ServerException {
         return userRepository.findById(id)
+                .orElseThrow(() -> new ServerException(ErrorInformationBuilder.build(ErrorCodeConstants.DATA_NOT_FOUND)));
+    }
+    private User getUserByLogin(String login) throws ServerException {
+        return userRepository.findFirstByLogin(login)
                 .orElseThrow(() -> new ServerException(ErrorInformationBuilder.build(ErrorCodeConstants.DATA_NOT_FOUND)));
     }
 }

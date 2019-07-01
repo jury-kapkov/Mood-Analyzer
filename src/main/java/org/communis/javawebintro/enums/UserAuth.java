@@ -1,7 +1,7 @@
 package org.communis.javawebintro.enums;
 
 public enum UserAuth {
-    BD("База данных"), LDAP("LDAP");
+    BD("База данных");
 
     private String stringName;
 

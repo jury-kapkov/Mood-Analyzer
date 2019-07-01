@@ -14,7 +14,7 @@ import java.util.Date;
 @Data
 public class UserWrapper implements ObjectWrapper<User>, Serializable
 {
-    private final String EMAIL_REGEXP = "(.+@.+)";
+//    private final String EMAIL_REGEXP = "(.+@.+)";
 
     private Long id;
 
@@ -79,6 +79,7 @@ public class UserWrapper implements ObjectWrapper<User>, Serializable
             item.setMail(mail);
             item.setName(name);
             item.setSurname(surname);
+//            item.setPassword(password);
         }
     }
 
