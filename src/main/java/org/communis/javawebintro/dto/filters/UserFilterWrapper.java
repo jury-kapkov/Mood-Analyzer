@@ -1,6 +1,5 @@
 package org.communis.javawebintro.dto.filters;
 
-
 import org.communis.javawebintro.enums.UserRole;
 
 public class UserFilterWrapper extends ObjectFilter

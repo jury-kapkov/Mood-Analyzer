@@ -43,7 +43,6 @@
                 <th>Почта</th>
                 <th>Роль</th>
                 <th>Дата регистрации</th>
-                <th>Утечка пароля</th>
             </tr>
             </thead>
             <tbody>
@@ -54,7 +53,6 @@
                 <td th:text="${user.mail}"></td>
                 <td th:text="${user.role!=null ? user.role.getStringName() : ''}"></td>
                 <td th:text="${user.date_create}"></td>
-                <td th:text="${user.password}"></td>
             </tr>
             </tbody>
         </table>

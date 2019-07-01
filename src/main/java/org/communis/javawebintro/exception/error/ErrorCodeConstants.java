@@ -46,6 +46,9 @@ public class ErrorCodeConstants {
 
     public static final ErrorCodeIdentifier USER_LDAP_EXIST_BD = USER.branch("8");
 
+    public static final ErrorCodeIdentifier TAG = new ErrorCodeIdentifier("1");
+    public static final ErrorCodeIdentifier TAG_ADDITING_ERROR = TAG.branch("1");
+
     static {
         messages.put(DATA_NOT_FOUND, "Ошибка при получении реестра ldap-серверов");
         messages.put(ACCESS_ERROR, "Доступ запрещен");

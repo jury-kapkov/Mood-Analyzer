@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sd="http://www.thymeleaf.org/spring-data"
+      xmlns="http://www.w3.org/1999/xhtml">
+<head th:replace="fragments/head :: head(~{::title},~{::link}, ~{::script})">
+    <title>Список тєгов</title>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/static/css/filter.css}"/>
+
+    <script th:src="@{/static/lib/floatThead/jquery.floatThead.min.js}"></script>
+    <script th:src="@{/static/js/filter.js}"></script>
+</head>
+<body>
+    <header th:replace="fragments/header :: header(users, admin)"></header>
+    <div class="table-area">
+        <table class="bordered" style="width: 100%;">
+            <thead>
+            <tr>
+                <th>Имя тэга</th>
+                <th>Дата создания</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:class="'clickable'" th:each="user : ${page}"
+                th:onclick="'request(\'' + @{|/admin/users/${user.id}|}+ '\');'">
+                <td th:text="|${user.getFio()}|"></td>
+                <td th:text="${user.login}"></td>
+                <td th:text="${user.mail}"></td>
+                <td th:text="${user.role!=null ? user.role.getStringName() : ''}"></td>
+                <td th:text="${user.date_create}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
