@@ -23,7 +23,7 @@
             <tbody>
             <tr th:class="'clickable'" th:each="tag : ${page}">
                 <td th:text="${tag.name}"></td>
-                <td th:text="${tag.dateTimeCreate}"></td>
+                <td th:text="${tag.getFormattedDate()}"></td>
             </tr>
             </tbody>
         </table>

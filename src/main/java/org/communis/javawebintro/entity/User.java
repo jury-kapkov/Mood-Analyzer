@@ -5,6 +5,7 @@ import org.communis.javawebintro.enums.UserRole;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.text.SimpleDateFormat;
 
 @Data
 @Entity
@@ -37,4 +38,6 @@ public class User {
     @Enumerated(EnumType.STRING)
     @Column
     private UserRole role;
+
+
 }

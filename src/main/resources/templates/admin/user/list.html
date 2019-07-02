@@ -52,7 +52,7 @@
                 <td th:text="${user.login}"></td>
                 <td th:text="${user.mail}"></td>
                 <td th:text="${user.role!=null ? user.role.getStringName() : ''}"></td>
-                <td th:text="${user.date_create}"></td>
+                <td th:text="${user.getFormattedDate()}"></td>
             </tr>
             </tbody>
         </table>

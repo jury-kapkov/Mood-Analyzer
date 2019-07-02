@@ -9,6 +9,7 @@ import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Data
@@ -91,5 +92,9 @@ public class UserWrapper implements ObjectWrapper<User>, Serializable
     public boolean isPasswordValid() {
         return (password == null && confirmPassword == null) ||
                 (password != null && confirmPassword != null && password.equals(confirmPassword));
+    }
+
+    public String getFormattedDate() {
+        return new SimpleDateFormat("yyyy.MM.dd 'в' HH:mm:ss ").format(date_create);
     }
 }

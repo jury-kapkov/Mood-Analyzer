@@ -3,6 +3,7 @@ package org.communis.javawebintro.entity;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Data
@@ -21,4 +22,8 @@ public class Tag {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "date_time_create")
     private Date dateTimeCreate;
+
+    public String getFormattedDate() {
+        return new SimpleDateFormat("yyyy.MM.dd 'в' HH:mm:ss ").format(dateTimeCreate);
+    }
 }
