@@ -8,17 +8,18 @@
     <link rel="stylesheet" type="text/css" th:href="@{/static/css/filter.css}"/>
 
     <script th:src="@{/static/lib/floatThead/jquery.floatThead.min.js}"></script>
-    <script th:src="@{/static/js/filter.js}"></script>
+<!--    <script th:src="@{/static/js/tag.js}"></script>-->
 </head>
 <body>
     <header th:replace="fragments/header :: header(users, admin)"></header>
     <div class="table-area">
-        <table class="table table-striped table-bordered" style="width: 100%;">
+        <table class="table table-striped table-bordered">
             <thead class="">
                 <tr>
                     <th>ID</th>
                     <th>Имя тэга</th>
                     <th>Дата создания</th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -26,6 +27,13 @@
                     <td th:text="${tag.id}"></td>
                     <td th:text="${tag.name}"></td>
                     <td th:text="${tag.getFormattedDate()}"></td>
+                    <td style="width: 60px;">
+                        <form th:action="${'/tags/' + tag.id}" method="DELETE" class="tag-form-delete">
+                            <button type="submit" class="btn btn-danger">
+                                <i class="fas fa-eraser"></i>
+                            </button>
+                        </form>
+                    </td>
                 </tr>
                 </tbody>
             </thead>

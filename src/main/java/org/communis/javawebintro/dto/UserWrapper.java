@@ -80,7 +80,7 @@ public class UserWrapper implements ObjectWrapper<User>, Serializable
             item.setMail(mail);
             item.setName(name);
             item.setSurname(surname);
-//            item.setPassword(password);
+            item.setPassword(password);
         }
     }
 

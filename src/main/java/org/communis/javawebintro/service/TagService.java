@@ -58,11 +58,25 @@ public class TagService {
     public void delete(Long id) throws ServerException {
         try {
             Tag tag = getTagById(id);
-            tagRepository.delete(tag.getId());
+            tagRepository.delete(tag);
         }catch (Exception exception) {
             throw new ServerException(ErrorInformationBuilder.build(ErrorCodeConstants.TAG_DELETE_ERROR), exception);
         }
     }
+    public void edit(TagWrapper tagWrapper) throws ServerException {
+        try {
+            Tag tag = getTagById(tagWrapper.getId());
+            Date date = tag.getDateTimeCreate();
+            tagWrapper.fromWrapper(tag);
+            if (tag.getDateTimeCreate() == null) {
+                tag.setDateTimeCreate(date);
+            }
+            tagRepository.save(tag);
+        }catch (Exception exception) {
+            throw new ServerException(ErrorInformationBuilder.build(ErrorCodeConstants.TAG_DELETE_ERROR), exception);
+        }
+    }
+
     public Tag getTagById(Long id) throws ServerException {
         return tagRepository.findById(id)
                 .orElseThrow(() -> new ServerException(ErrorInformationBuilder.build(ErrorCodeConstants.DATA_NOT_FOUND)));

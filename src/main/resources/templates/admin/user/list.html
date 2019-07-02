@@ -35,7 +35,7 @@
         </div>
     </form>
     <div class="table-area">
-        <table class="bordered" style="width: 100%;">
+        <table class="table-striped table-bordered" style="width: 100%;">
             <thead>
             <tr>
                 <th>ФИО</th>
@@ -46,7 +46,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:class="'clickable'" th:each="user : ${page}"
+            <tr th:each="user : ${page}"
                 th:onclick="'request(\'' + @{|/admin/users/${user.id}|}+ '\');'">
                 <td th:text="|${user.getFio()}|"></td>
                 <td th:text="${user.login}"></td>

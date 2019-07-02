@@ -32,8 +32,16 @@ public class TagRestController {
         tagService.add(tagWrapper);
     }
 
-    @DeleteMapping("delete")
-    public void deleteTag(@RequestParam("id") Long id) throws InvalidDataException, ServerException {
+    @DeleteMapping("{id}")
+    public void deleteTag(@PathVariable Long id) throws InvalidDataException, ServerException {
         tagService.delete(id);
+    }
+
+    @RequestMapping(value = "", method = RequestMethod.PATCH)
+    public void editTag(@Valid TagWrapper tagWrapper, BindingResult bindingResult) throws ServerException {
+        if (bindingResult.hasErrors()) {
+            throw new InvalidDataException(ErrorInformationBuilder.build(ErrorCodeConstants.DATA_VALIDATE_ERROR));
+        }
+        tagService.edit(tagWrapper);
     }
 }
