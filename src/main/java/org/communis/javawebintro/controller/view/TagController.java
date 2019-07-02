@@ -40,4 +40,13 @@ public class TagController {
         tagPage.addObject("page", tagRepository.findAll());
         return tagPage;
     }
+    //Delete tag by id
+//    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+//    public ModelAndView editPage(@PathVariable("id") Long id) throws ServerException {
+//        ModelAndView deleteTagPage = new ModelAndView(TAG_VIEWS_PATH + "delete");
+////        editPage.addObject("user", userService.getById(id));
+////        editPage.addObject("authList", UserAuth.values());
+////        prepareUserModelAndView(editPage);
+//        return editPage;
+//    }
 }

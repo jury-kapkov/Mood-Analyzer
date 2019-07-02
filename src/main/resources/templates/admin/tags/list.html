@@ -13,19 +13,22 @@
 <body>
     <header th:replace="fragments/header :: header(users, admin)"></header>
     <div class="table-area">
-        <table class="bordered" style="width: 100%;">
-            <thead>
-            <tr>
-                <th>Имя тэга</th>
-                <th>Дата создания</th>
-            </tr>
+        <table class="table table-striped table-bordered" style="width: 100%;">
+            <thead class="">
+                <tr>
+                    <th>ID</th>
+                    <th>Имя тэга</th>
+                    <th>Дата создания</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="tag : ${page}">
+                    <td th:text="${tag.id}"></td>
+                    <td th:text="${tag.name}"></td>
+                    <td th:text="${tag.getFormattedDate()}"></td>
+                </tr>
+                </tbody>
             </thead>
-            <tbody>
-            <tr th:class="'clickable'" th:each="tag : ${page}">
-                <td th:text="${tag.name}"></td>
-                <td th:text="${tag.getFormattedDate()}"></td>
-            </tr>
-            </tbody>
         </table>
     </div>
 </body>

@@ -48,6 +48,7 @@ public class ErrorCodeConstants {
 
     public static final ErrorCodeIdentifier TAG = new ErrorCodeIdentifier("1");
     public static final ErrorCodeIdentifier TAG_ADDITING_ERROR = TAG.branch("1");
+    public static final ErrorCodeIdentifier TAG_DELETE_ERROR = TAG.branch("2");
 
     static {
         messages.put(DATA_NOT_FOUND, "Ошибка при получении реестра ldap-серверов");

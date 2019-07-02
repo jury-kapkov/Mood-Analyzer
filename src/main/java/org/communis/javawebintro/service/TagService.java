@@ -55,4 +55,16 @@ public class TagService {
             throw new ServerException(ErrorInformationBuilder.build(ErrorCodeConstants.TAG_ADDITING_ERROR), exception);
         }
     }
+    public void delete(Long id) throws ServerException {
+        try {
+            Tag tag = getTagById(id);
+            tagRepository.delete(tag.getId());
+        }catch (Exception exception) {
+            throw new ServerException(ErrorInformationBuilder.build(ErrorCodeConstants.TAG_DELETE_ERROR), exception);
+        }
+    }
+    public Tag getTagById(Long id) throws ServerException {
+        return tagRepository.findById(id)
+                .orElseThrow(() -> new ServerException(ErrorInformationBuilder.build(ErrorCodeConstants.DATA_NOT_FOUND)));
+    }
 }
