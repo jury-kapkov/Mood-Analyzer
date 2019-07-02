@@ -13,6 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "tags")
@@ -30,6 +31,14 @@ public class TagRestController {
             throw new InvalidDataException(ErrorInformationBuilder.build(ErrorCodeConstants.DATA_VALIDATE_ERROR));
         }
         tagService.add(tagWrapper);
+    }
+
+    @RequestMapping(value = "/addList", method = RequestMethod.POST)
+    public void addListOfTag(@Valid List<TagWrapper> tagWrappers, BindingResult bindingResult) throws ServerException {
+        if (bindingResult.hasErrors()) {
+            throw new InvalidDataException(ErrorInformationBuilder.build(ErrorCodeConstants.DATA_VALIDATE_ERROR));
+        }
+        tagService.addList(tagWrappers);
     }
 
     @DeleteMapping("{id}")

@@ -55,6 +55,18 @@ public class TagService {
             throw new ServerException(ErrorInformationBuilder.build(ErrorCodeConstants.TAG_ADDITING_ERROR), exception);
         }
     }
+    public void addList(List<TagWrapper> tagWrappers) throws ServerException {
+        try {
+            for (TagWrapper tagWrapper : tagWrappers) {
+                Tag tag = new Tag();
+                tagWrapper.fromWrapper(tag);
+                tag.setDateTimeCreate(new Date());
+                tagRepository.save(tag);
+            }
+        }catch (Exception exception) {
+            throw new ServerException(ErrorInformationBuilder.build(ErrorCodeConstants.TAG_ADDITING_ERROR), exception);
+        }
+    }
     public void delete(Long id) throws ServerException {
         try {
             Tag tag = getTagById(id);
