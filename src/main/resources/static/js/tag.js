@@ -1,5 +1,5 @@
 $(document).ready(function(){
- $(".user-delete-form").ajaxForm({
+    $(".tag-delete-form").ajaxForm({
         url: $(this).attr("action"),
         method: "DELETE",
         success: function (response) {

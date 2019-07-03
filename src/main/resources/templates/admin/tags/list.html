@@ -8,7 +8,7 @@
     <link rel="stylesheet" type="text/css" th:href="@{/static/css/filter.css}"/>
 
     <script th:src="@{/static/lib/floatThead/jquery.floatThead.min.js}"></script>
-<!--    <script th:src="@{/static/js/tag.js}"></script>-->
+    <script th:src="@{/static/js/tag.js}"></script>
 </head>
 <body>
     <header th:replace="fragments/header :: header(users, admin)"></header>
@@ -28,7 +28,7 @@
                     <td th:text="${tag.name}"></td>
                     <td th:text="${tag.getFormattedDate()}"></td>
                     <td style="width: 60px;">
-                        <form th:action="${'/tags/' + tag.id}" method="DELETE" class="tag-form-delete">
+                        <form th:action="${'/tags/' + tag.id}" method="DELETE" class="tag-delete-form">
                             <button type="submit" class="btn btn-danger">
                                 <i class="fas fa-eraser"></i>
                             </button>
