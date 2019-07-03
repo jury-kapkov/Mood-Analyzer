@@ -47,19 +47,7 @@ public class TagService {
 
     public void add(TagWrapper tagWrapper) throws ServerException {
         try {
-            Tag tag = new Tag();
-            tagWrapper.fromWrapper(tag);
-            tag.setDateTimeCreate(new Date());
-            tagRepository.save(tag);
-        }catch (Exception exception) {
-            throw new ServerException(ErrorInformationBuilder.build(ErrorCodeConstants.TAG_ADDITING_ERROR), exception);
-        }
-    }
-    public void addList(List<TagWrapper> tagWrappers) throws ServerException {
-        try {
-            for (TagWrapper tagWrapper : tagWrappers) {
-                Tag tag = new Tag();
-                tagWrapper.fromWrapper(tag);
+            for (Tag tag : tagWrapper.getTags()) {
                 tag.setDateTimeCreate(new Date());
                 tagRepository.save(tag);
             }
@@ -67,6 +55,7 @@ public class TagService {
             throw new ServerException(ErrorInformationBuilder.build(ErrorCodeConstants.TAG_ADDITING_ERROR), exception);
         }
     }
+
     public void delete(Long id) throws ServerException {
         try {
             Tag tag = getTagById(id);
@@ -75,15 +64,16 @@ public class TagService {
             throw new ServerException(ErrorInformationBuilder.build(ErrorCodeConstants.TAG_DELETE_ERROR), exception);
         }
     }
-    public void edit(TagWrapper tagWrapper) throws ServerException {
+
+    public void edit(TagWrapper tagWrapper, Long id) throws ServerException {
         try {
-            Tag tag = getTagById(tagWrapper.getId());
-            Date date = tag.getDateTimeCreate();
-            tagWrapper.fromWrapper(tag);
-            if (tag.getDateTimeCreate() == null) {
-                tag.setDateTimeCreate(date);
-            }
-            tagRepository.save(tag);
+                Tag tag = getTagById(id);
+                Date date = tag.getDateTimeCreate();
+                tagWrapper.fromWrapper(tag);
+                if (tag.getDateTimeCreate() == null) {
+                    tag.setDateTimeCreate(date);
+                }
+                tagRepository.save(tag);
         }catch (Exception exception) {
             throw new ServerException(ErrorInformationBuilder.build(ErrorCodeConstants.TAG_DELETE_ERROR), exception);
         }

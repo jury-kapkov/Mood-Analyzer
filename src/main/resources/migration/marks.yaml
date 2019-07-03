@@ -16,7 +16,7 @@ databaseChangeLog:
                 nullable: false
           - column:
               name: mark
-              type: varchar(20)
+              type: int
           - column:
               name: date_time_create
               type: TIMESTAMP

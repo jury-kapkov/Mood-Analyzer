@@ -16,7 +16,7 @@ public class Mark {
     private Long id;
 
     @Column(name = "mark")
-    private String mark;
+    private Integer mark;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "date_time_create")
