@@ -49,7 +49,11 @@ public class ErrorCodeConstants {
     public static final ErrorCodeIdentifier TAG = new ErrorCodeIdentifier("1");
     public static final ErrorCodeIdentifier TAG_ADDITING_ERROR = TAG.branch("1");
     public static final ErrorCodeIdentifier TAG_DELETE_ERROR = TAG.branch("2");
+    public static final ErrorCodeIdentifier TAG_EDIT_ERROR = TAG.branch("3");
 
+    public static final ErrorCodeIdentifier MARK = new ErrorCodeIdentifier("1");
+    public static final ErrorCodeIdentifier MARK_DELETE_ERROR = MARK.branch("2");
+    public static final ErrorCodeIdentifier MARK_EDIT_ERROR = MARK.branch("3");
     static {
         messages.put(DATA_NOT_FOUND, "Ошибка при получении реестра ldap-серверов");
         messages.put(ACCESS_ERROR, "Доступ запрещен");

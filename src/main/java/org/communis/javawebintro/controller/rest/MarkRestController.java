@@ -1,5 +1,6 @@
 package org.communis.javawebintro.controller.rest;
 
+import org.communis.javawebintro.dto.MarkWrapper;
 import org.communis.javawebintro.dto.TagWrapper;
 import org.communis.javawebintro.exception.InvalidDataException;
 import org.communis.javawebintro.exception.ServerException;
@@ -13,33 +14,26 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping(value = "tags")
-public class TagRestController {
+@RequestMapping(value = "marks")
+public class MarkRestController {
+
     private final TagService tagService;
 
     @Autowired
-    public TagRestController(TagService tagService) {
+    public MarkRestController(TagService tagService) {
         this.tagService = tagService;
     }
 
-    @RequestMapping(value = "", method = RequestMethod.POST)
-    public void add(@Valid TagWrapper tagWrapper, BindingResult bindingResult) throws ServerException {
-        if (bindingResult.hasErrors()) {
-            throw new InvalidDataException(ErrorInformationBuilder.build(ErrorCodeConstants.DATA_VALIDATE_ERROR));
-        }
-        tagService.add(tagWrapper);
-    }
-
     @DeleteMapping("{id}")
-    public void deleteTag(@PathVariable Long id) throws InvalidDataException, ServerException {
-        tagService.delete(id);
+    public void deleteMark(@PathVariable Long id) throws InvalidDataException, ServerException {
+        tagService.deleteMark(id);
     }
 
     @RequestMapping(value = "", method = RequestMethod.PATCH)
-    public void editTag(@Valid TagWrapper tagWrapper, Long id, BindingResult bindingResult) throws ServerException {
+    public void editMark(@Valid MarkWrapper markWrapper, BindingResult bindingResult) throws ServerException {
         if (bindingResult.hasErrors()) {
             throw new InvalidDataException(ErrorInformationBuilder.build(ErrorCodeConstants.DATA_VALIDATE_ERROR));
         }
-        tagService.edit(tagWrapper, id);
+        tagService.editMark(markWrapper);
     }
 }

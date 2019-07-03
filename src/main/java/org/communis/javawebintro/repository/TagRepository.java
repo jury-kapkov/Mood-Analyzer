@@ -1,7 +1,6 @@
 package org.communis.javawebintro.repository;
 
 import org.communis.javawebintro.entity.Tag;
-import org.communis.javawebintro.enums.UserRole;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 

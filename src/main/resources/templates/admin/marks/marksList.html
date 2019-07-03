@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sd="http://www.thymeleaf.org/spring-data"
+      xmlns="http://www.w3.org/1999/xhtml">
+<head th:replace="fragments/head :: head(~{::title},~{::link}, ~{::script})">
+    <title>Список оценок</title>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/static/css/filter.css}"/>
+
+    <script th:src="@{/static/lib/floatThead/jquery.floatThead.min.js}"></script>
+</head>
+<body>
+<header th:replace="fragments/header :: header(users, admin)"></header>
+<div class="table-area">
+    <table class="table table-striped table-bordered">
+        <thead class="">
+        <tr>
+            <th>ID</th>
+            <th>Оценка</th>
+            <th>Дата создания</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="mark : ${page}">
+            <td th:text="${mark.id}"></td>
+            <td th:text="${mark.mark}"></td>
+            <td th:text="${mark.getFormattedDate()}"></td>
+            <td style="width: 60px;">
+                <form th:action="${'/marks/' + mark.id}" method="DELETE" class="mark-form-delete">
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fas fa-eraser"></i>
+                    </button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+        </thead>
+    </table>
+</div>
+</body>
+</html>
