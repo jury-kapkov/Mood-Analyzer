@@ -27,7 +27,7 @@
             <td th:text="${mark.mark}"></td>
             <td th:text="${mark.getFormattedDate()}"></td>
             <td style="width: 60px;">
-                <form th:action="${'/marks/' + mark.id}" method="DELETE" class="mark-form-delete">
+                <form th:action="${'/marks/' + mark.id}" method="DELETE" class="mark-delete-form">
                     <button type="submit" class="btn btn-danger">
                         <i class="fas fa-eraser"></i>
                     </button>
