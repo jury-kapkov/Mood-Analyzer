@@ -16,7 +16,6 @@ public class TagWrapper implements ObjectWrapper<Tag>, Serializable {
    @NotNull
     private ArrayList<Tag> tags = new ArrayList<>(0);
 //    Оценка
-    @NotNull
     @Max(100)
     @Min(0)
     private Integer mark;

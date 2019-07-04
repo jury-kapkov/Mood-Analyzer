@@ -39,15 +39,18 @@ public class TagService {
     public void add(TagWrapper tagWrapper) throws ServerException {
         try {
             for (Tag tag : tagWrapper.getTags()) {
-                if (tag.getName() != "") {
+                String name = tag.getName();
+                if (name != "" && tagRepository.findByName(name).equals(Optional.empty()) ) {
                     tag.setDateTimeCreate(new Date());
                     tagRepository.save(tag);
                 }
             }
-            Mark mark = new Mark();
-            mark.setMark(tagWrapper.getMark());
-            mark.setDateTimeCreate(new Date());
-            markRepository.save(mark);
+            if (tagWrapper.getMark() != null) {
+                Mark mark = new Mark();
+                mark.setMark(tagWrapper.getMark());
+                mark.setDateTimeCreate(new Date());
+                markRepository.save(mark);
+            }
         }catch (Exception exception) {
             throw new ServerException(ErrorInformationBuilder.build(ErrorCodeConstants.TAG_ADDITING_ERROR), exception);
         }

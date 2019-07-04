@@ -1,6 +1,3 @@
-$(document).ready(function () {
-    MaterializeUtils.materializeUpdate();
-});
 
 function request(url) {
     window.location = url;

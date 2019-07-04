@@ -37,3 +37,29 @@ top menu
    font-size: 1rem;
    width: 100%;
 }
+
+.input_add {
+ border-style: none;
+   border-radius: .25rem;
+   border: 1px solid #007bff;
+   line-height: 1.5;
+   padding: .375rem .75rem;
+   font-size: 1rem;
+   width: 50%;
+   margin-right: 10px;
+   transition: width 0.5s;
+}
+
+body {
+    padding-bottom: 20px;
+}
+.tag-delete-form {
+    display: inline-block;
+}
+.display_none {
+    display: none !important;
+}
+.display_flex {
+    display: flex !important;
+}
+

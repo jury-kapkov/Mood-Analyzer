@@ -13,6 +13,14 @@ $(document).ready(function(){
             window.location.pathname = "/admin/marks";
         }
     });
+     $("#mark-add-form").ajaxForm({
+        url: $(this).attr("action"),
+        method: "POST",
+        success: function (response) {
+            window.location.pathname = "/admin/marks";
+        }
+    });
+
     $("#tag-add-form").ajaxForm({
         url: $(this).attr("action"),
         method: "POST",
@@ -20,11 +28,12 @@ $(document).ready(function(){
             window.location.pathname = "/admin/tags";
         }
     });
-      $("#mark-add-form").ajaxForm({
+
+     $("#tag-edit-form").ajaxForm({
             url: $(this).attr("action"),
-            method: "POST",
+            method: "PATCH",
             success: function (response) {
-                window.location.pathname = "/admin/marks";
+                window.location.pathname = "/admin/tags";
             }
         });
 });

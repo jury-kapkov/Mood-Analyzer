@@ -10,37 +10,40 @@
     <script th:src="@{/static/lib/floatThead/jquery.floatThead.min.js}"></script>
 </head>
 <body>
-<header th:replace="fragments/header :: header(users, admin)"></header>
-<div class="table-area">
-    <table class="table table-striped table-bordered">
-        <thead class="">
-        <tr>
-            <th>ID</th>
-            <th>Оценка</th>
-            <th>Дата создания</th>
-            <th></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="mark : ${page}">
-            <td th:text="${mark.id}"></td>
-            <td th:text="${mark.mark}"></td>
-            <td th:text="${mark.getFormattedDate()}"></td>
-            <td style="width: 60px;">
-                <form th:action="${'/marks/' + mark.id}" method="DELETE" class="mark-delete-form">
-                    <button type="submit" class="btn btn-danger">
-                        <i class="fas fa-eraser"></i>
-                    </button>
-                </form>
-            </td>
-        </tr>
-        </tbody>
-        </thead>
-    </table>
-    <form id="mark-add-form" method="POST" action="/tags" style="display: flex;">
-        <input type="text" class="input_add_tag" id="mark"  placeholder="Введите оценку настроению" name="mark" required/>
-        <button  class="btn btn-primary add_button" type="submit">Добавить</button >
-    </form>
-</div>
+    <header th:replace="fragments/header :: header(users, admin)"></header>
+    <div class="table-area">
+        <form id="mark-add-form" method="POST" action="/tags" style="display: flex; margin-bottom: 20px;">
+            <input type="number" class="input_add_tag" id="mark"  placeholder="Введите оценку настроению" name="mark" required/>
+            <button  class="btn btn-primary add_button" type="submit">Добавить</button >
+        </form>
+        <table class="table table-striped table-bordered">
+            <thead class="">
+            <tr>
+                <th>ID</th>
+                <th>Оценка</th>
+                <th>Дата создания</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="mark : ${page}">
+                <td th:text="${mark.id}"></td>
+                <td th:text="${mark.mark}"></td>
+                <td th:text="${mark.getFormattedDate()}"></td>
+                <td style="width: 60px;">
+                    <form th:action="${'/marks/' + mark.id}" method="DELETE" class="mark-delete-form">
+                        <button type="submit" class="btn btn-danger">
+                            <i class="fas fa-eraser"></i>
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+            </thead>
+        </table>
+    </div>
 </body>
+<script>
+
+</script>
 </html>
