@@ -38,6 +38,11 @@
                 </tbody>
             </thead>
         </table>
+        <form id="tag-add-form" method="POST" action="/tags">
+            <input type="text" class="input_add_tag" id="tag"  placeholder="Введите новый тэг" name="tags[0].name"/>
+            <input type="text" class="input_add_tag" id="mark"  placeholder="Оцените свое настроение" name="mark"/>
+            <button  class="btn btn-primary add_button" type="submit">Добавить</button >
+        </form>
     </div>
 </body>
 </html>

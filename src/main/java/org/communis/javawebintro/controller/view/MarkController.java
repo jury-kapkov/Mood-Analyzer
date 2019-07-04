@@ -12,6 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 @Log4j2
 @Controller
 @RequestMapping(value = "admin/marks")
+
 public class MarkController {
     private String MARK_VIEWS_PATH = "admin/marks/";
 

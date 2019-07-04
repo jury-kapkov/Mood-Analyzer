@@ -4,25 +4,27 @@ $(document).ready(function(){
         method: "DELETE",
         success: function (response) {
             window.location.pathname = "/admin/tags";
-        },
-        error: function (error) {
-            if (error.status != 200) {
-                $("#error-modal .modal-body p").text(error.responseJSON.message);
-                $("#error-modal").modal();
-            }
         }
     });
      $(".mark-delete-form").ajaxForm({
+        url: $(this).attr("action"),
+        method: "DELETE",
+        success: function (response) {
+            window.location.pathname = "/admin/marks";
+        }
+    });
+    $("#tag-add-form").ajaxForm({
+        url: $(this).attr("action"),
+        method: "POST",
+        success: function (response) {
+            window.location.pathname = "/admin/tags";
+        }
+    });
+      $("#mark-add-form").ajaxForm({
             url: $(this).attr("action"),
-            method: "DELETE",
+            method: "POST",
             success: function (response) {
                 window.location.pathname = "/admin/marks";
-            },
-            error: function (error) {
-                if (error.status != 200) {
-                    $("#error-modal .modal-body p").text(error.responseJSON.message);
-                    $("#error-modal").modal();
-                }
             }
         });
 });

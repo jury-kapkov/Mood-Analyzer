@@ -17,17 +17,6 @@ import org.communis.javawebintro.repository.TagRepository;
 import org.communis.javawebintro.repository.specifications.UserSpecification;
 import org.communis.javawebintro.utils.CredentialsUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.session.SessionInformation;
-import org.springframework.security.core.session.SessionRegistry;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -50,8 +39,10 @@ public class TagService {
     public void add(TagWrapper tagWrapper) throws ServerException {
         try {
             for (Tag tag : tagWrapper.getTags()) {
-                tag.setDateTimeCreate(new Date());
-                tagRepository.save(tag);
+                if (tag.getName() != "") {
+                    tag.setDateTimeCreate(new Date());
+                    tagRepository.save(tag);
+                }
             }
             Mark mark = new Mark();
             mark.setMark(tagWrapper.getMark());
