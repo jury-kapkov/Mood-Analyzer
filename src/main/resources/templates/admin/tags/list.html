@@ -21,7 +21,7 @@
             </form>
 
             <form id="tag-edit-form" method="PATCH" action="/tags" style="margin-bottom: 20px; justify-content: space-around;" class="display_none">
-                <input type="text" class="input_add_tag" placeholder="Введите новый тэг" name="tags[0].name" required/>
+                <input type="text" class="input_add_tag" placeholder="Введите новый тэг" name="tags[0].name" required id="data_for_editing"/>
                 <input type="text" class="input_add" name="id" id="id_for_editing" style="display:none;"/>
                 <button  class="btn btn-primary" type="submit"  id="action_button_edit">Изменить</button >
             </form>
@@ -46,7 +46,7 @@
                                 <i class="fas fa-eraser"></i>
                             </button>
                         </form>
-                        <div class="btn btn-primary" onclick="return edit(this);" th:id="${tag.id}">
+                        <div class="btn btn-primary" onclick="return edit(this);" th:id="${tag.id}" th:data-text="${tag.name}">
                             <i class="fas fa-edit"></i>
                         </div>
                     </td>
@@ -57,35 +57,33 @@
     </div>
 </body>
 <script>
-    function edit(element) {
-        var button = document.getElementById("action_button");
-        var id = element.id;
-        if (button.textContent == "Добавить"){
-                var temp = document.getElementById("id_for_editing");
-                    temp.value = id;
+<!--    function edit(element) {-->
+<!--        var button = document.getElementById("action_button");-->
+<!--        var id = element.id;-->
+<!--        var data = element.dataset.text;-->
+<!--        alert(data-text);-->
+<!--        if (button.textContent == "Добавить"){-->
+<!--                var temp = document.getElementById("id_for_editing");-->
+<!--                temp.value = id;-->
+<!--                var edit_input = document.getElementById("data_for_editing");-->
+<!--                edit_input.value = data;-->
 
-                var edit_form = document.getElementById("tag-edit-form");
-                var add_form = document.getElementById("tag-add-form");
-                edit_form.classList.remove("display_none");
-                edit_form.classList.add("display_flex");
+<!--                var edit_form = document.getElementById("tag-edit-form");-->
+<!--                var add_form = document.getElementById("tag-add-form");-->
+<!--                edit_form.classList.remove("display_none");-->
+<!--                edit_form.classList.add("display_flex");-->
 
-                add_form.classList.remove("display_flex");
-                add_form.classList.add("display_none");
+<!--                add_form.classList.remove("display_flex");-->
+<!--                add_form.classList.add("display_none");-->
 
-                var button_edit = document.getElementById("action_button_edit");
-                button_edit.classList.add("add_button");
-        } else {
-            var temp = document.getElementById("id_for_editing");
-            temp.value = id;
-        }
-    }
-<!--    function add(element) {-->
-<!--        element.value = "Добавить";-->
-<!--        element.removeAttribute("onclick");-->
-<!--        element.addAttribute("onclick", "return edit(this);");-->
-<!--        var input_mark = document.getElementById("mark");-->
-<!--        var input_tag = document.getElementById("tag");-->
-<!--        input_mark.style.display = "flex";-->
+<!--                var button_edit = document.getElementById("action_button_edit");-->
+<!--                button_edit.classList.add("add_button");-->
+<!--        } else {-->
+<!--            var temp = document.getElementById("id_for_editing");-->
+<!--            temp.value = id;-->
+<!--            var edit_input = document.getElementById("data_for_editing");-->
+<!--            edit_input.value = data;-->
+<!--        }-->
 <!--    }-->
 </script>
 </html>
